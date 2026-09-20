@@ -1,0 +1,8 @@
+{
+  "name": "Medga Store - Gaming Store & Services",
+  "description": "PlayStation games store, PS Plus subscriptions, Fortnite V-Bucks, Rocket League credits, social boosting, and instant WhatsApp ordering.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

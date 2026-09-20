@@ -1,0 +1,100 @@
+{
+  "entities": {
+    "users": {
+      "title": "users",
+      "description": "User profiles",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["email"]
+    },
+    "orders": {
+      "title": "orders",
+      "description": "Store customer orders and transactions",
+      "type": "object",
+      "properties": {
+        "orderNumber": { "type": "string" },
+        "userEmail": { "type": "string" },
+        "userName": { "type": "string" },
+        "customerPhone": { "type": "string" },
+        "date": { "type": "string" },
+        "total": { "type": "number" },
+        "status": { "type": "string" },
+        "paymentMethod": { "type": "string" },
+        "customerNotes": { "type": "string" },
+        "paymentScreenshot": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "rating": { "type": "number" },
+        "ratingComment": { "type": "string" },
+        "ratedAt": { "type": "string" }
+      },
+      "required": ["orderNumber", "total", "status", "paymentMethod"]
+    },
+    "support_chats": {
+      "title": "support_chats",
+      "description": "In-app customer live support chat messages and inquiries",
+      "type": "object",
+      "properties": {
+        "sender": { "type": "string" },
+        "text": { "type": "string" },
+        "timestamp": { "type": "string" },
+        "customerName": { "type": "string" },
+        "customerPhone": { "type": "string" },
+        "orderNumber": { "type": "string" }
+      },
+      "required": ["sender", "text", "timestamp"]
+    },
+    "reviews": {
+      "title": "reviews",
+      "description": "Verified customer feedback and star ratings on delivered orders and games",
+      "type": "object",
+      "properties": {
+        "orderId": { "type": "string" },
+        "orderNumber": { "type": "string" },
+        "productId": { "type": "string" },
+        "productTitle": { "type": "string" },
+        "rating": { "type": "number" },
+        "comment": { "type": "string" },
+        "authorName": { "type": "string" },
+        "authorEmail": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "verifiedBuyer": { "type": "boolean" }
+      },
+      "required": ["rating", "comment", "authorName", "createdAt"]
+    },
+    "points_transactions": {
+      "title": "points_transactions",
+      "description": "Reward points ledger for purchases, game suggestions, reviews, and redemptions",
+      "type": "object",
+      "properties": {
+        "userEmail": { "type": "string" },
+        "userName": { "type": "string" },
+        "points": { "type": "number" },
+        "reason": { "type": "string" },
+        "description": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["points", "reason", "createdAt"]
+    },
+    "suggestions": {
+      "title": "suggestions",
+      "description": "User suggestions for new games or services",
+      "type": "object",
+      "properties": {
+        "type": { "type": "string" },
+        "title": { "type": "string" },
+        "platform": { "type": "string" },
+        "details": { "type": "string" },
+        "userEmail": { "type": "string" },
+        "userName": { "type": "string" },
+        "pointsAwarded": { "type": "number" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["title", "type", "createdAt"]
+    }
+  }
+}

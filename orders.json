@@ -1,0 +1,30 @@
+[
+  {
+    "id": "ord-1789251230021",
+    "orderNumber": "SST-2026-345490",
+    "userEmail": "medgastore@gmail.com",
+    "userName": "medga",
+    "customerPhone": "01212072882",
+    "gameAccountEmail": "",
+    "gameAccountPassword": "",
+    "date": "Sep 13, 2026",
+    "items": [
+      {
+        "id": "item-0-1789251230022",
+        "name": "Hezo Boost - TikTok Likes",
+        "details": "1,000 likes • Standard (No Warranty)",
+        "price": 60,
+        "category": "hezo"
+      }
+    ],
+    "total": 60,
+    "status": "Processing",
+    "paymentMethod": "Paymob Card (CARD •••• 4525)",
+    "customerNotes": "Order note",
+    "paymentScreenshot": "",
+    "transactionReference": "PAYMOB-TX-107492",
+    "paymentStatus": "paid",
+    "channel": "website",
+    "createdAt": "2026-09-12T22:13:50.022Z"
+  }
+]
