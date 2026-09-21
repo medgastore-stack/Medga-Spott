@@ -2,6 +2,10 @@ import React from 'react';
 
 /**
  * Universal Asset URL resolver for GitHub Pages, custom domains, and local dev.
+ * Supports:
+ * - Direct files in public/
+ * - Dedicated SeenSoldThere/ folders (local folder and repo subfolder)
+ * - /images/ subfolder
  * Automatically handles spaces/special chars in filenames, repo subpaths (e.g. /my-repo/), and relative paths.
  */
 export function getImageUrl(path: string): string {
@@ -39,14 +43,18 @@ export function getImageUrl(path: string): string {
 
 /**
  * Image fallback handler for <img> elements:
- * If an image fails to load, attempts alternative paths (e.g. in /images/ subfolder, encoded spaces, or root relative).
+ * If an image fails to load, attempts alternative paths:
+ * 1. SeenSoldThere/ subfolder (matches your local computer folder on GitHub)
+ * 2. /images/ subfolder
+ * 3. Root relative
+ * 4. Relative ./ and ./SeenSoldThere/
  */
 export function handleImageError(e: React.SyntheticEvent<HTMLImageElement, Event>, fallbackSrc?: string) {
   const target = e.currentTarget;
   const currentSrc = target.src;
   const retryCount = parseInt(target.dataset.retryCount || '0', 10);
 
-  if (retryCount >= 4) {
+  if (retryCount >= 6) {
     if (fallbackSrc && target.src !== fallbackSrc) {
       target.src = fallbackSrc;
     } else {
@@ -67,16 +75,18 @@ export function handleImageError(e: React.SyntheticEvent<HTMLImageElement, Event
     const decodedFilename = decodeURIComponent(filename);
 
     if (retryCount === 0) {
-      // Try with /images/ subfolder
-      if (!rawPath.includes('/images/')) {
-        target.src = getImageUrl(`images/${decodedFilename}`);
-      } else {
-        target.src = getImageUrl(decodedFilename);
-      }
+      // Try with SeenSoldThere/ folder first (direct match for user's computer folder)
+      target.src = getImageUrl(`SeenSoldThere/${decodedFilename}`);
     } else if (retryCount === 1) {
+      // Try with images/ subfolder
+      target.src = getImageUrl(`images/${decodedFilename}`);
+    } else if (retryCount === 2) {
       // Try root-relative directly
       target.src = `/${encodeURIComponent(decodedFilename)}`;
-    } else if (retryCount === 2) {
+    } else if (retryCount === 3) {
+      // Try relative ./SeenSoldThere/ directly
+      target.src = `./SeenSoldThere/${encodeURIComponent(decodedFilename)}`;
+    } else if (retryCount === 4) {
       // Try relative ./ directly
       target.src = `./${encodeURIComponent(decodedFilename)}`;
     } else {

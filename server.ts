@@ -1851,9 +1851,11 @@ GUIDELINES & FORMATTING:
   app.post("/api/ai-chat", handleAiChat);
   app.post("/api/chat", handleAiChat);
 
-  // Serve static assets from public/ and dist/ directly with high priority
+  // Serve static assets from public/, SeenSoldThere/, and dist/ directly with high priority
   app.use(express.static(path.join(process.cwd(), "public")));
   app.use("/images", express.static(path.join(process.cwd(), "public", "images")));
+  app.use("/SeenSoldThere", express.static(path.join(process.cwd(), "public", "SeenSoldThere")));
+  app.use("/SeenSoldThere", express.static(path.join(process.cwd(), "SeenSoldThere")));
   app.use(express.static(path.join(process.cwd(), "dist")));
 
   // Resilient image resolver middleware: catches all image requests regardless of encoding or subpath
@@ -1862,8 +1864,11 @@ GUIDELINES & FORMATTING:
     if (/\.(jpg|jpeg|png|webp|svg|gif|ico)$/i.test(rawPath)) {
       const decodedFilename = path.basename(decodeURIComponent(rawPath));
       const candidates = [
+        path.join(process.cwd(), "public", "SeenSoldThere", decodedFilename),
+        path.join(process.cwd(), "SeenSoldThere", decodedFilename),
         path.join(process.cwd(), "public", decodedFilename),
         path.join(process.cwd(), "public", "images", decodedFilename),
+        path.join(process.cwd(), "dist", "SeenSoldThere", decodedFilename),
         path.join(process.cwd(), "dist", decodedFilename),
         path.join(process.cwd(), "dist", "images", decodedFilename),
       ];
