@@ -28,6 +28,7 @@ import {
   UserPlus,
 } from 'lucide-react';
 import { CartItem, Order, User } from '../types';
+import { getImageUrl, handleImageError } from '../utils/imageHelper';
 import { generateOrderId, saveOrderToBackend } from '../lib/orderUtils';
 import { getUserPoints, redeemPoints, pointsToEgpDiscount, POINTS_TIERS, canRedeemFreeGame } from '../lib/pointsUtils';
 import { WHATSAPP_NUMBER } from '../data/storeData';
@@ -1572,7 +1573,12 @@ export const WebsiteCheckoutModal: React.FC<WebsiteCheckoutModalProps> = ({
                 >
                   <div className="flex items-center justify-between mb-1.5">
                     <div className="p-1 rounded-lg bg-blue-500/20">
-                      <img src="/paymob.png" alt="Paymob" className="w-5 h-5 object-contain" />
+                      <img
+                        src={getImageUrl('paymob.png')}
+                        onError={handleImageError}
+                        alt="Paymob"
+                        className="w-5 h-5 object-contain"
+                      />
                     </div>
                     <span className="px-2 py-0.5 text-[9px] font-black uppercase bg-amber-500/20 text-amber-300 border border-amber-500/40 rounded-full">
                       {language === 'ar' ? 'قريباً' : 'Coming Soon'}
@@ -1598,8 +1604,18 @@ export const WebsiteCheckoutModal: React.FC<WebsiteCheckoutModalProps> = ({
                 >
                   <div className="flex items-center justify-between mb-1.5">
                     <div className="flex items-center gap-1">
-                      <img src="/Instapay.png" alt="InstaPay" className="w-5 h-5 object-contain rounded-sm" />
-                      <img src="/Telda.jpg" alt="Telda" className="w-5 h-5 object-contain rounded-sm" />
+                      <img
+                        src={getImageUrl('Instapay.png')}
+                        onError={handleImageError}
+                        alt="InstaPay"
+                        className="w-5 h-5 object-contain rounded-sm"
+                      />
+                      <img
+                        src={getImageUrl('Telda.jpg')}
+                        onError={handleImageError}
+                        alt="Telda"
+                        className="w-5 h-5 object-contain rounded-sm"
+                      />
                     </div>
                     {checkoutMethod === 'transfer' && <CheckCircle2 className="w-4 h-4 text-purple-400" />}
                   </div>
@@ -1672,7 +1688,12 @@ export const WebsiteCheckoutModal: React.FC<WebsiteCheckoutModalProps> = ({
                         : 'bg-slate-950 border-white/10 text-slate-400'
                     }`}
                   >
-                    <img src="/Instapay.png" alt="InstaPay" className="w-5 h-5 object-contain mx-auto mb-1" />
+                    <img
+                      src={getImageUrl('Instapay.png')}
+                      onError={handleImageError}
+                      alt="InstaPay"
+                      className="w-5 h-5 object-contain mx-auto mb-1"
+                    />
                     <span className="block text-xs font-extrabold">InstaPay</span>
                     <span className="text-[10px] font-mono opacity-80">01212072882</span>
                   </button>
@@ -1700,7 +1721,12 @@ export const WebsiteCheckoutModal: React.FC<WebsiteCheckoutModalProps> = ({
                         : 'bg-slate-950 border-white/10 text-slate-400'
                     }`}
                   >
-                    <img src="/Telda.jpg" alt="Telda" className="w-5 h-5 object-contain rounded-sm mx-auto mb-1" />
+                    <img
+                      src={getImageUrl('Telda.jpg')}
+                      onError={handleImageError}
+                      alt="Telda"
+                      className="w-5 h-5 object-contain rounded-sm mx-auto mb-1"
+                    />
                     <span className="block text-xs font-extrabold">Telda</span>
                     <span className="text-[10px] font-mono opacity-80">@selimahmed1</span>
                   </button>

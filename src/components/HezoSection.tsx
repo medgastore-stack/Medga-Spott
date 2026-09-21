@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { socialServices, WHATSAPP_NUMBER } from '../data/storeData';
+import { getImageUrl, handleImageError } from '../utils/imageHelper';
 import {
   Heart,
   Eye,
@@ -123,7 +124,8 @@ export const HezoSection: React.FC<HezoSectionProps> = ({ onAddToCart }) => {
           </div>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 mb-4">
             <img
-              src="/Hezo Boost.jpg"
+              src={getImageUrl('Hezo Boost.jpg')}
+              onError={handleImageError}
               alt="Hezo Boost"
               referrerPolicy="no-referrer"
               className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover shadow-xl border-2 border-pink-500/30 hover:scale-105 transition-transform"

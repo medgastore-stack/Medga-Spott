@@ -25,6 +25,7 @@ import { gamesData } from '../data/gamesData';
 import { OrderTracker } from './OrderTracker';
 import { deduplicateOrders } from '../lib/orderUtils';
 import { OrderFeedbackModal } from './OrderFeedbackModal';
+import { handleImageError } from '../utils/imageHelper';
 
 interface OrderHistoryModalProps {
   isOpen: boolean;
@@ -822,6 +823,7 @@ export const OrderHistoryModal: React.FC<OrderHistoryModalProps> = ({
                       {item.image ? (
                         <img
                           src={item.image}
+                          onError={handleImageError}
                           alt={item.name}
                           className="w-14 h-14 rounded-xl object-cover shrink-0 border border-white/10 shadow-sm"
                           referrerPolicy="no-referrer"

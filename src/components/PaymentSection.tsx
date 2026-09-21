@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { getImageUrl, handleImageError } from '../utils/imageHelper';
 import {
   Wallet,
   PhoneCall,
@@ -124,7 +125,12 @@ export const PaymentSection: React.FC<PaymentSectionProps> = ({
             </div>
 
             <div className="w-16 h-16 rounded-2xl bg-blue-900/40 border border-blue-500/40 flex items-center justify-center text-blue-400 mb-4 group-hover:scale-110 transition-transform shadow-lg shadow-blue-950/50">
-              <img src="/paymob.png" alt="Paymob" className="w-9 h-9 object-contain" />
+              <img
+                src={getImageUrl('paymob.png')}
+                onError={handleImageError}
+                alt="Paymob"
+                className="w-9 h-9 object-contain"
+              />
             </div>
 
             <div className="w-full">
@@ -169,7 +175,12 @@ export const PaymentSection: React.FC<PaymentSectionProps> = ({
             className="group cursor-pointer p-6 sm:p-8 rounded-3xl glass-panel border border-white/10 hover:border-purple-500/50 hover:bg-slate-900/80 transition-all duration-300 text-center flex flex-col items-center justify-between shadow-xl"
           >
             <div className="w-16 h-16 rounded-2xl bg-purple-900/40 border border-purple-500/30 flex items-center justify-center text-purple-400 mb-4 group-hover:scale-110 transition-transform">
-              <img src="/Telda.jpg" alt="Telda" className="w-9 h-9 object-contain rounded-xl" />
+              <img
+                src={getImageUrl('Telda.jpg')}
+                onError={handleImageError}
+                alt="Telda"
+                className="w-9 h-9 object-contain rounded-xl"
+              />
             </div>
             <div>
               <h3 className="text-2xl font-black text-white mb-1">Telda</h3>
@@ -197,7 +208,12 @@ export const PaymentSection: React.FC<PaymentSectionProps> = ({
             className="group cursor-pointer p-6 sm:p-8 rounded-3xl glass-panel border border-white/10 hover:border-pink-500/50 hover:bg-slate-900/80 transition-all duration-300 text-center flex flex-col items-center justify-between shadow-xl"
           >
             <div className="w-16 h-16 rounded-2xl bg-pink-900/40 border border-pink-500/30 flex items-center justify-center text-pink-400 mb-4 group-hover:scale-110 transition-transform">
-              <img src="/Instapay.png" alt="InstaPay" className="w-9 h-9 object-contain rounded-xl" />
+              <img
+                src={getImageUrl('Instapay.png')}
+                onError={handleImageError}
+                alt="InstaPay"
+                className="w-9 h-9 object-contain rounded-xl"
+              />
             </div>
             <div>
               <h3 className="text-2xl font-black text-white mb-1">InstaPay</h3>

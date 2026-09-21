@@ -4,6 +4,7 @@ import { ShoppingCart, Check, Mail, Lock, Eye, EyeOff, Sparkles, Rocket, Heart, 
 import { WishlistItem, Order } from '../types';
 import { useLanguage } from '../context/LanguageContext';
 import { saveOrderToBackend } from '../lib/orderUtils';
+import { getImageUrl, handleImageError } from '../utils/imageHelper';
 
 interface RocketSectionProps {
   onAddToCart: (item: { name: string; details: string; price: number; category: 'rocket'; icon?: string }) => void;
@@ -128,13 +129,15 @@ export const RocketSection: React.FC<RocketSectionProps> = ({
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 mb-3">
             <div className="flex items-center gap-2">
               <img
-                src="/Rocket League Credits.jpg"
+                src={getImageUrl('Rocket League Credits.jpg')}
+                onError={handleImageError}
                 alt="Rocket League Credits"
                 referrerPolicy="no-referrer"
                 className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover shadow-xl border-2 border-white/20 hover:scale-105 transition-transform"
               />
               <img
-                src="/Rocket League Season Pass.jpg"
+                src={getImageUrl('Rocket League Season Pass.jpg')}
+                onError={handleImageError}
                 alt="Rocket League Pass"
                 referrerPolicy="no-referrer"
                 className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover shadow-xl border-2 border-white/20 hover:scale-105 transition-transform hidden sm:block"

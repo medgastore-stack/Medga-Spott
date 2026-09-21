@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { CartItem } from '../types';
+import { getImageUrl, handleImageError } from '../utils/imageHelper';
 import {
   X,
   Trash2,
@@ -330,7 +331,12 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                       {language === 'ar' ? 'قريباً' : 'Soon'}
                     </span>
                     <span className="flex items-center gap-1">
-                      <img src="/paymob.png" alt="Paymob" className="w-3.5 h-3.5 object-contain rounded-sm" />
+                      <img
+                        src={getImageUrl('paymob.png')}
+                        onError={handleImageError}
+                        alt="Paymob"
+                        className="w-3.5 h-3.5 object-contain rounded-sm"
+                      />
                       <span>Paymob</span>
                     </span>
                     <span className="text-[9px] font-normal opacity-80 truncate max-w-[80px]">
@@ -348,7 +354,12 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                     }`}
                   >
                     <span className="flex items-center gap-1">
-                      <img src="/Instapay.png" alt="InstaPay" className="w-3.5 h-3.5 object-contain rounded-sm" />
+                      <img
+                        src={getImageUrl('Instapay.png')}
+                        onError={handleImageError}
+                        alt="InstaPay"
+                        className="w-3.5 h-3.5 object-contain rounded-sm"
+                      />
                       <span>InstaPay</span>
                     </span>
                     <span className="text-[9px] font-normal opacity-80 truncate max-w-[80px]">01212072882</span>
@@ -364,7 +375,12 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                     }`}
                   >
                     <span className="flex items-center gap-1">
-                      <img src="/Telda.jpg" alt="Telda" className="w-3.5 h-3.5 object-contain rounded-sm" />
+                      <img
+                        src={getImageUrl('Telda.jpg')}
+                        onError={handleImageError}
+                        alt="Telda"
+                        className="w-3.5 h-3.5 object-contain rounded-sm"
+                      />
                       <span>Telda</span>
                     </span>
                     <span className="text-[9px] font-normal opacity-80 truncate max-w-[80px]">@selimahmed1</span>

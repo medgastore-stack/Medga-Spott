@@ -5,6 +5,7 @@ import { calculateGamePrice } from '../data/gamesData';
 import { getDeliveryEstimate } from '../lib/deliveryEstimates';
 import { PreorderCountdown } from './PreorderCountdown';
 import { useLanguage } from '../context/LanguageContext';
+import { handleImageError } from '../utils/imageHelper';
 
 interface GameDetailsModalProps {
   game: Game | null;
@@ -127,6 +128,7 @@ export const GameDetailsModal: React.FC<GameDetailsModalProps> = ({
               {game.image ? (
                 <img
                   src={game.image}
+                  onError={handleImageError}
                   alt={game.name}
                   referrerPolicy="no-referrer"
                   className="w-full h-full object-cover"

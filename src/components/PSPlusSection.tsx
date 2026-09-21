@@ -3,6 +3,7 @@ import { plusData } from '../data/storeData';
 import { Check, ShoppingCart, Award, ShieldCheck, Heart, Zap, Sparkles } from 'lucide-react';
 import { WishlistItem } from '../types';
 import { useLanguage } from '../context/LanguageContext';
+import { getImageUrl, handleImageError } from '../utils/imageHelper';
 
 interface PSPlusSectionProps {
   onAddToCart: (item: { name: string; details: string; price: number; category: 'psplus'; icon?: string }) => void;
@@ -77,7 +78,8 @@ export const PSPlusSection: React.FC<PSPlusSectionProps> = ({
           </div>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 mb-4">
             <img
-              src="/Playstation Plus.jpg"
+              src={getImageUrl('Playstation Plus.jpg')}
+              onError={handleImageError}
               alt="PlayStation Plus"
               referrerPolicy="no-referrer"
               className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover shadow-xl border-2 border-white/20 hover:scale-105 transition-transform"

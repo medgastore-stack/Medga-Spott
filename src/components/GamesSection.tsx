@@ -7,6 +7,7 @@ import { GameRequestBanner } from './GameRequestBanner';
 import { PreorderCountdown } from './PreorderCountdown';
 import { getDeliveryEstimate } from '../lib/deliveryEstimates';
 import { useLanguage } from '../context/LanguageContext';
+import { handleImageError } from '../utils/imageHelper';
 
 interface GamesSectionProps {
   onAddToCart: (item: { name: string; details: string; price: number; category: 'game'; icon?: string }) => void;
@@ -589,6 +590,7 @@ export const GamesSection: React.FC<GamesSectionProps> = ({
                       {game.image ? (
                         <img
                           src={game.image}
+                          onError={handleImageError}
                           alt={game.name}
                           referrerPolicy="no-referrer"
                           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"

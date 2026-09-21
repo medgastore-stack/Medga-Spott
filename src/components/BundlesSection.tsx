@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Package, Sparkles, Check, ShoppingCart, Zap, Heart, ShieldCheck, Users, Gamepad2 } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import { getImageUrl, handleImageError } from '../utils/imageHelper';
 
 interface BundlesSectionProps {
   onAddToCart: (item: {
@@ -78,7 +79,7 @@ export const BundlesSection: React.FC<BundlesSectionProps> = ({
       details: `${currentEditionObj.label} - Special Bundle (${bundlePrice} ${t.egp})`,
       price: bundlePrice,
       category: 'bundle',
-      icon: '/It Takes Two.jpg',
+      icon: getImageUrl('It Takes Two.jpg'),
     });
     setIsAdded(true);
     setTimeout(() => setIsAdded(false), 2000);
@@ -90,7 +91,7 @@ export const BundlesSection: React.FC<BundlesSectionProps> = ({
       details: `${currentEditionObj.label} - Special Bundle (${bundlePrice} ${t.egp})`,
       price: bundlePrice,
       category: 'bundle' as const,
-      icon: '/It Takes Two.jpg',
+      icon: getImageUrl('It Takes Two.jpg'),
     };
     if (onInstantBuy) {
       onInstantBuy(item);
@@ -131,7 +132,8 @@ export const BundlesSection: React.FC<BundlesSectionProps> = ({
                 {/* It Takes Two Cover */}
                 <div className="w-36 h-52 sm:w-44 sm:h-64 rounded-2xl overflow-hidden shadow-2xl border-2 border-white/20 transform -rotate-6 hover:rotate-0 transition-transform duration-300 z-10 bg-slate-900 shrink-0">
                   <img
-                    src="/It Takes Two.jpg"
+                    src={getImageUrl('It Takes Two.jpg')}
+                    onError={handleImageError}
                     alt="It Takes Two"
                     referrerPolicy="no-referrer"
                     className="w-full h-full object-cover"
@@ -146,7 +148,8 @@ export const BundlesSection: React.FC<BundlesSectionProps> = ({
                 {/* A Way Out Cover */}
                 <div className="w-36 h-52 sm:w-44 sm:h-64 rounded-2xl overflow-hidden shadow-2xl border-2 border-white/20 transform rotate-6 hover:rotate-0 transition-transform duration-300 z-20 bg-slate-900 shrink-0 -ml-10">
                   <img
-                    src="/A way Out.jpg"
+                    src={getImageUrl('A way Out.jpg')}
+                    onError={handleImageError}
                     alt="A Way Out"
                     referrerPolicy="no-referrer"
                     className="w-full h-full object-cover"
@@ -186,7 +189,7 @@ export const BundlesSection: React.FC<BundlesSectionProps> = ({
                           name: `${bundleTitle} (${currentEditionObj.badge})`,
                           price: bundlePrice,
                           category: 'bundle',
-                          icon: '/It Takes Two.jpg',
+                          icon: getImageUrl('It Takes Two.jpg'),
                         })
                       }
                       className="p-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 border border-white/10 text-slate-300 hover:text-white transition-all cursor-pointer"

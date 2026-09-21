@@ -176,7 +176,7 @@ export default function App() {
               try {
                 new Notification('Medga Store Wishlist Alert', {
                   body: `${matchedGame.name} in your wishlist is now on sale for ${currentPrice} L.E!`,
-                  icon: matchedGame.image || '/logo.png',
+                  icon: matchedGame.image || undefined,
                 });
               } catch (e) {}
             }

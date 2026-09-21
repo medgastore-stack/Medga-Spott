@@ -4,6 +4,7 @@ import { ShoppingCart, Check, Mail, Eye, EyeOff, Sparkles, Zap, Heart, Phone, Us
 import { WishlistItem, Order } from '../types';
 import { useLanguage } from '../context/LanguageContext';
 import { saveOrderToBackend } from '../lib/orderUtils';
+import { getImageUrl, handleImageError } from '../utils/imageHelper';
 
 interface VBucksSectionProps {
   onAddToCart: (item: { name: string; details: string; price: number; category: 'vbucks'; icon?: string }) => void;
@@ -131,7 +132,8 @@ export const VBucksSection: React.FC<VBucksSectionProps> = ({
         <div className="text-center mb-10">
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 mb-3">
             <img
-              src="/Fortnite Vbucks.jpg"
+              src={getImageUrl('Fortnite Vbucks.jpg')}
+              onError={handleImageError}
               alt="Fortnite V-Bucks"
               referrerPolicy="no-referrer"
               className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover shadow-xl border-2 border-white/20 hover:scale-105 transition-transform"
