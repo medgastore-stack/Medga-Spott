@@ -18,7 +18,7 @@ import {
 import { useLanguage } from '../context/LanguageContext';
 
 interface HezoSectionProps {
-  onAddToCart: (item: { name: string; details: string; price: number; category: 'hezo'; icon?: string }) => void;
+  onAddToCart: (item: { name: string; details: string; price: number; category: 'hezo'; icon?: string; image?: string }) => void;
 }
 
 export const HezoSection: React.FC<HezoSectionProps> = ({ onAddToCart }) => {
@@ -106,7 +106,8 @@ export const HezoSection: React.FC<HezoSectionProps> = ({ onAddToCart }) => {
       details: `${activePackage.quantity.toLocaleString()} ${activeService.category} • ${selectedWarranty.label}`,
       price: finalPrice,
       category: 'hezo',
-      icon: 'trending-up'
+      icon: 'trending-up',
+      image: getImageUrl('Hezo Boost.jpg'),
     });
 
     setAdded(true);

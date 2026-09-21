@@ -6,7 +6,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { getImageUrl, handleImageError } from '../utils/imageHelper';
 
 interface PSPlusSectionProps {
-  onAddToCart: (item: { name: string; details: string; price: number; category: 'psplus'; icon?: string }) => void;
+  onAddToCart: (item: { name: string; details: string; price: number; category: 'psplus'; icon?: string; image?: string }) => void;
   isWishlisted?: (id: string) => boolean;
   onToggleWishlist?: (item: Omit<WishlistItem, 'addedAt'>) => void;
   hasOrderedCategory?: (category: 'game' | 'psplus' | 'vbucks' | 'rocket' | 'hezo') => boolean;
@@ -61,6 +61,7 @@ export const PSPlusSection: React.FC<PSPlusSectionProps> = ({
       price,
       category: 'psplus',
       icon: 'award',
+      image: getImageUrl('Playstation Plus.jpg'),
     });
 
     setAddedPlanId(plan.id);

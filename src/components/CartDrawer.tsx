@@ -14,6 +14,7 @@ import {
   Phone,
   User,
   KeyRound,
+  Gamepad2,
 } from 'lucide-react';
 import { WHATSAPP_NUMBER } from '../data/storeData';
 import { getUserPoints, pointsToEgpDiscount, POINTS_TIERS, canRedeemFreeGame, redeemPoints } from '../lib/pointsUtils';
@@ -285,8 +286,25 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
               cart.map((item) => (
                 <div
                   key={item.cartId}
-                  className="p-4 rounded-2xl bg-slate-900/80 border border-white/5 flex items-center justify-between gap-3 group hover:border-purple-500/30 transition-all"
+                  className="p-3.5 sm:p-4 rounded-2xl bg-slate-900/80 border border-white/5 flex items-center justify-between gap-3 group hover:border-purple-500/30 transition-all"
                 >
+                  {/* Item Image Thumbnail */}
+                  <div className="w-12 h-14 rounded-xl overflow-hidden shrink-0 bg-slate-950 border border-white/10 shadow-sm">
+                    {item.image ? (
+                      <img
+                        src={item.image}
+                        onError={handleImageError}
+                        alt={item.name}
+                        referrerPolicy="no-referrer"
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full gradient-bg flex items-center justify-center">
+                        <Gamepad2 className="w-5 h-5 text-white/50" />
+                      </div>
+                    )}
+                  </div>
+
                   <div className="min-w-0 flex-1">
                     <h4 className="font-extrabold text-white text-sm truncate">{item.name}</h4>
                     <p className="text-xs text-slate-400 mt-0.5 truncate">{item.details}</p>

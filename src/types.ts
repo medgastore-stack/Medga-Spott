@@ -77,6 +77,7 @@ export interface CartItem {
   price: number;
   category: 'game' | 'psplus' | 'vbucks' | 'rocket' | 'hezo' | 'bundle';
   icon?: string;
+  image?: string;
   quantity?: number;
 }
 
@@ -88,6 +89,7 @@ export interface OrderItem {
   details: string;
   price: number;
   category?: string;
+  image?: string;
 }
 
 export interface Order {
@@ -192,5 +194,6 @@ export interface WishlistItem {
   price: number;
   details?: string;
   icon?: string;
+  image?: string;
   addedAt: number;
 }

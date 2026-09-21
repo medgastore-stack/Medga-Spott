@@ -7,7 +7,7 @@ import { saveOrderToBackend } from '../lib/orderUtils';
 import { getImageUrl, handleImageError } from '../utils/imageHelper';
 
 interface VBucksSectionProps {
-  onAddToCart: (item: { name: string; details: string; price: number; category: 'vbucks'; icon?: string }) => void;
+  onAddToCart: (item: { name: string; details: string; price: number; category: 'vbucks'; icon?: string; image?: string }) => void;
   onShowToast?: (msg: string, type?: 'success' | 'error' | 'info') => void;
   isWishlisted?: (id: string) => boolean;
   onToggleWishlist?: (item: Omit<WishlistItem, 'addedAt'>) => void;
@@ -114,7 +114,8 @@ export const VBucksSection: React.FC<VBucksSectionProps> = ({
       details,
       price: selectedPack.price,
       category: 'vbucks',
-      icon: 'zap'
+      icon: 'zap',
+      image: getImageUrl('Fortnite Vbucks.jpg'),
     });
 
     setIsAdded(true);

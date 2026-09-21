@@ -1,6 +1,7 @@
 import React from 'react';
 import { X, Heart, Trash2, ShoppingCart, ArrowRight, Gamepad2, Award, Zap, Rocket, Share2, Sparkles } from 'lucide-react';
 import { WishlistItem } from '../types';
+import { handleImageError } from '../utils/imageHelper';
 
 interface WishlistModalProps {
   isOpen: boolean;
@@ -8,7 +9,7 @@ interface WishlistModalProps {
   wishlist: WishlistItem[];
   onRemoveItem: (id: string) => void;
   onClearWishlist: () => void;
-  onAddToCart: (item: { name: string; details: string; price: number; category: any; icon?: string }) => void;
+  onAddToCart: (item: { name: string; details: string; price: number; category: any; icon?: string; image?: string }) => void;
   onShowToast?: (msg: string, type?: 'success' | 'error' | 'info') => void;
   onNavigateToCategory?: (cat: string) => void;
 }
@@ -67,6 +68,7 @@ export const WishlistModal: React.FC<WishlistModalProps> = ({
       price: item.price,
       category: item.category,
       icon: item.icon,
+      image: item.image,
     });
     if (onShowToast) {
       onShowToast(`Added "${item.name}" to cart!`, 'success');
@@ -82,6 +84,7 @@ export const WishlistModal: React.FC<WishlistModalProps> = ({
         price: item.price,
         category: item.category,
         icon: item.icon,
+        image: item.image,
       });
     });
     if (onShowToast) {
@@ -185,8 +188,18 @@ export const WishlistModal: React.FC<WishlistModalProps> = ({
                   className="p-4 rounded-2xl bg-slate-900/70 border border-white/5 hover:border-pink-500/30 transition-all flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 group"
                 >
                   <div className="flex items-center gap-3.5 min-w-0">
-                    <div className="w-12 h-12 rounded-xl bg-slate-950 border border-white/10 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
-                      {getCategoryIcon(item.category)}
+                    <div className="w-12 h-14 rounded-xl bg-slate-950 border border-white/10 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform overflow-hidden">
+                      {item.image ? (
+                        <img
+                          src={item.image}
+                          onError={handleImageError}
+                          alt={item.name}
+                          referrerPolicy="no-referrer"
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        getCategoryIcon(item.category)
+                      )}
                     </div>
                     <div className="min-w-0">
                       <div className="flex items-center gap-2">

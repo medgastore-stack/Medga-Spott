@@ -26,6 +26,7 @@ import {
   UserCheck,
   LogIn,
   UserPlus,
+  Gamepad2,
 } from 'lucide-react';
 import { CartItem, Order, User } from '../types';
 import { getImageUrl, handleImageError } from '../utils/imageHelper';
@@ -668,6 +669,7 @@ export const WebsiteCheckoutModal: React.FC<WebsiteCheckoutModalProps> = ({
           details: i.details,
           price: i.price,
           category: i.category,
+          image: i.image,
         })),
         total,
         status: 'Processing',
@@ -1101,31 +1103,63 @@ export const WebsiteCheckoutModal: React.FC<WebsiteCheckoutModalProps> = ({
         ) : (
           /* CHECKOUT FORM */
           <form onSubmit={handleSubmitOrder} className="p-5 sm:p-7 space-y-5 max-h-[78vh] overflow-y-auto">
-            {/* Cart Summary Header */}
-            <div className="p-4 rounded-2xl bg-slate-900/70 border border-white/10 flex items-center justify-between">
-              <div>
-                <p className="text-xs text-slate-400 font-bold uppercase tracking-wider">
-                  {language === 'ar' ? 'ملخص السلة' : 'Cart Overview'}
-                </p>
-                <p className="text-sm font-extrabold text-white mt-0.5">
-                  {cart.length}{' '}
-                  {language === 'ar'
-                    ? cart.length === 1
-                      ? 'عنصر جاهز للتسليم'
-                      : 'عناصر جاهزة للتسليم'
-                    : cart.length === 1
-                    ? 'Item Ready for Delivery'
-                    : 'Items Ready for Delivery'}
-                </p>
+            {/* Cart Summary Header & Items Preview */}
+            <div className="p-4 rounded-2xl bg-slate-900/70 border border-white/10 space-y-3">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs text-slate-400 font-bold uppercase tracking-wider">
+                    {language === 'ar' ? 'ملخص السلة' : 'Cart Overview'}
+                  </p>
+                  <p className="text-sm font-extrabold text-white mt-0.5">
+                    {cart.length}{' '}
+                    {language === 'ar'
+                      ? cart.length === 1
+                        ? 'عنصر جاهز للتسليم'
+                        : 'عناصر جاهزة للتسليم'
+                      : cart.length === 1
+                      ? 'Item Ready for Delivery'
+                      : 'Items Ready for Delivery'}
+                  </p>
+                </div>
+                <div className="text-right">
+                  <p className="text-xs text-slate-400">
+                    {language === 'ar' ? 'المبلغ المستحق' : 'Total Due'}
+                  </p>
+                  <p className="text-xl font-black text-purple-400">
+                    {total} {language === 'ar' ? 'ج.م' : 'L.E'}
+                  </p>
+                </div>
               </div>
-              <div className="text-right">
-                <p className="text-xs text-slate-400">
-                  {language === 'ar' ? 'المبلغ المستحق' : 'Total Due'}
-                </p>
-                <p className="text-xl font-black text-purple-400">
-                  {total} {language === 'ar' ? 'ج.م' : 'L.E'}
-                </p>
-              </div>
+
+              {/* Items List Preview */}
+              {cart.length > 0 && (
+                <div className="pt-2 border-t border-white/5 space-y-2 max-h-36 overflow-y-auto pr-1 custom-scrollbar">
+                  {cart.map((item) => (
+                    <div key={item.cartId} className="flex items-center justify-between gap-3 text-xs bg-black/20 p-2 rounded-xl">
+                      <div className="flex items-center gap-2.5 min-w-0">
+                        <div className="w-8 h-10 rounded-lg overflow-hidden bg-slate-800 border border-white/10 shrink-0 flex items-center justify-center">
+                          {item.image ? (
+                            <img
+                              src={item.image}
+                              onError={handleImageError}
+                              alt={item.name}
+                              referrerPolicy="no-referrer"
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <Gamepad2 className="w-4 h-4 text-purple-400" />
+                          )}
+                        </div>
+                        <div className="min-w-0">
+                          <p className="font-bold text-white truncate">{item.name}</p>
+                          <p className="text-[10px] text-slate-400 truncate">{item.details}</p>
+                        </div>
+                      </div>
+                      <span className="font-black text-amber-400 shrink-0">{item.price} L.E</span>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Customer Contact Details */}

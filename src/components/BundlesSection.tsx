@@ -10,6 +10,7 @@ interface BundlesSectionProps {
     price: number;
     category: 'game' | 'psplus' | 'vbucks' | 'rocket' | 'hezo' | 'bundle';
     icon?: string;
+    image?: string;
   }) => void;
   onInstantBuy?: (item: {
     name: string;
@@ -17,9 +18,10 @@ interface BundlesSectionProps {
     price: number;
     category: 'game' | 'psplus' | 'vbucks' | 'rocket' | 'hezo' | 'bundle';
     icon?: string;
+    image?: string;
   }) => void;
   isWishlisted?: (id: string) => boolean;
-  onToggleWishlist?: (item: { id: string; name: string; price: number; category: string; icon?: string }) => void;
+  onToggleWishlist?: (item: { id: string; name: string; price: number; category: string; icon?: string; image?: string }) => void;
 }
 
 export const BundlesSection: React.FC<BundlesSectionProps> = ({
@@ -79,7 +81,8 @@ export const BundlesSection: React.FC<BundlesSectionProps> = ({
       details: `${currentEditionObj.label} - Special Bundle (${bundlePrice} ${t.egp})`,
       price: bundlePrice,
       category: 'bundle',
-      icon: getImageUrl('It Takes Two.jpg'),
+      icon: '🎁',
+      image: getImageUrl('It Takes Two.jpg'),
     });
     setIsAdded(true);
     setTimeout(() => setIsAdded(false), 2000);
@@ -91,7 +94,8 @@ export const BundlesSection: React.FC<BundlesSectionProps> = ({
       details: `${currentEditionObj.label} - Special Bundle (${bundlePrice} ${t.egp})`,
       price: bundlePrice,
       category: 'bundle' as const,
-      icon: getImageUrl('It Takes Two.jpg'),
+      icon: '🎁',
+      image: getImageUrl('It Takes Two.jpg'),
     };
     if (onInstantBuy) {
       onInstantBuy(item);
@@ -189,7 +193,8 @@ export const BundlesSection: React.FC<BundlesSectionProps> = ({
                           name: `${bundleTitle} (${currentEditionObj.badge})`,
                           price: bundlePrice,
                           category: 'bundle',
-                          icon: getImageUrl('It Takes Two.jpg'),
+                          icon: '🎁',
+                          image: getImageUrl('It Takes Two.jpg'),
                         })
                       }
                       className="p-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 border border-white/10 text-slate-300 hover:text-white transition-all cursor-pointer"

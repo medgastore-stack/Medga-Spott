@@ -303,6 +303,7 @@ export default function App() {
     price: number;
     category: 'game' | 'psplus' | 'vbucks' | 'rocket' | 'hezo' | 'bundle';
     icon?: string;
+    image?: string;
   }) => {
     const cartId = Date.now().toString() + Math.random().toString().slice(2, 5);
     const newCartItem: CartItem = {
@@ -321,6 +322,7 @@ export default function App() {
       price: number;
       category: 'game' | 'psplus' | 'vbucks' | 'rocket' | 'hezo' | 'bundle';
       icon?: string;
+      image?: string;
     }>
   ) => {
     if (!items || items.length === 0) return;

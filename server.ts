@@ -1851,6 +1851,31 @@ GUIDELINES & FORMATTING:
   app.post("/api/ai-chat", handleAiChat);
   app.post("/api/chat", handleAiChat);
 
+  // Serve static assets from public/ and dist/ directly with high priority
+  app.use(express.static(path.join(process.cwd(), "public")));
+  app.use("/images", express.static(path.join(process.cwd(), "public", "images")));
+  app.use(express.static(path.join(process.cwd(), "dist")));
+
+  // Resilient image resolver middleware: catches all image requests regardless of encoding or subpath
+  app.use((req, res, next) => {
+    const rawPath = req.path;
+    if (/\.(jpg|jpeg|png|webp|svg|gif|ico)$/i.test(rawPath)) {
+      const decodedFilename = path.basename(decodeURIComponent(rawPath));
+      const candidates = [
+        path.join(process.cwd(), "public", decodedFilename),
+        path.join(process.cwd(), "public", "images", decodedFilename),
+        path.join(process.cwd(), "dist", decodedFilename),
+        path.join(process.cwd(), "dist", "images", decodedFilename),
+      ];
+      for (const candidate of candidates) {
+        if (fs.existsSync(candidate) && fs.statSync(candidate).isFile()) {
+          return res.sendFile(candidate);
+        }
+      }
+    }
+    next();
+  });
+
   // Vite middleware in dev mode
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({

@@ -11,8 +11,8 @@ interface GameDetailsModalProps {
   game: Game | null;
   isOpen: boolean;
   onClose: () => void;
-  onAddToCart: (item: { name: string; details: string; price: number; category: 'game'; icon?: string }) => void;
-  onInstantBuy?: (item: { name: string; details: string; price: number; category: 'game'; icon?: string }) => void;
+  onAddToCart: (item: { name: string; details: string; price: number; category: 'game'; icon?: string; image?: string }) => void;
+  onInstantBuy?: (item: { name: string; details: string; price: number; category: 'game'; icon?: string; image?: string }) => void;
   isWishlisted?: (id: string) => boolean;
   onToggleWishlist?: (item: Omit<WishlistItem, 'addedAt'>) => void;
   onOpenEditionComparison?: (gameId?: string) => void;
@@ -98,6 +98,7 @@ export const GameDetailsModal: React.FC<GameDetailsModalProps> = ({
         price: isAvailable ? finalPrice : calculateGamePrice(game.prim5 || game.sec || 0),
         details: `${optionDetails[selectedOption].title} • ${game.genre || 'PS Game'}`,
         icon: game.icon,
+        image: game.image,
       });
     }
   };
@@ -110,6 +111,7 @@ export const GameDetailsModal: React.FC<GameDetailsModalProps> = ({
       price: finalPrice,
       category: 'game',
       icon: game.icon,
+      image: game.image,
     });
     setAdded(true);
     setTimeout(() => {
@@ -443,6 +445,7 @@ export const GameDetailsModal: React.FC<GameDetailsModalProps> = ({
                         price: finalPrice,
                         category: 'game',
                         icon: game.icon,
+                        image: game.image,
                       });
                     }}
                     className="px-5 py-3.5 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-sm flex items-center gap-2 transition-all shadow-xl shadow-emerald-950/50 hover:scale-105 active:scale-95 cursor-pointer"

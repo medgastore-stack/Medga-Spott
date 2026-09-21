@@ -3,6 +3,7 @@ import { Search, X, Gamepad2, Sparkles, ShoppingCart, Zap, Flame, Check, Heart }
 import { gamesData } from '../data/gamesData';
 import { plusData, vBucksData, rocketData, hezoData } from '../data/storeData';
 import { Game, WishlistItem } from '../types';
+import { handleImageError } from '../utils/imageHelper';
 
 interface ProductSearchModalProps {
   isOpen: boolean;
@@ -13,6 +14,7 @@ interface ProductSearchModalProps {
     price: number;
     category: 'game' | 'psplus' | 'vbucks' | 'rocket' | 'hezo';
     icon?: string;
+    image?: string;
   }) => void;
   onSelectCategorySection?: (sectionId: string) => void;
   isWishlisted?: (id: string) => boolean;
@@ -27,6 +29,7 @@ interface SearchResultItem {
   price: number;
   details: string;
   icon?: string;
+  image?: string;
   badge?: string;
   rawObject?: any;
 }
@@ -67,6 +70,7 @@ export const ProductSearchModal: React.FC<ProductSearchModalProps> = ({
         price,
         details: `${g.genre || 'PS4/PS5'} • Primary/Secondary`,
         icon: g.icon,
+        image: g.image,
         badge: g.popular ? 'Bestseller' : 'PS Game',
         rawObject: g,
       });
@@ -154,6 +158,7 @@ export const ProductSearchModal: React.FC<ProductSearchModalProps> = ({
       price: item.price,
       category: item.categoryKey,
       icon: item.icon,
+      image: item.image,
     });
     setAddedId(item.id);
     setTimeout(() => setAddedId(null), 1200);
@@ -235,8 +240,16 @@ export const ProductSearchModal: React.FC<ProductSearchModalProps> = ({
                 className="group p-3.5 sm:p-4 rounded-2xl bg-slate-900/60 border border-white/5 hover:border-purple-500/40 hover:bg-slate-800/80 transition-all flex items-center justify-between gap-4"
               >
                 <div className="flex items-center gap-3.5 min-w-0">
-                  <div className="w-12 h-12 rounded-xl bg-purple-950/80 border border-purple-500/30 flex items-center justify-center text-purple-300 text-xl font-black shrink-0 overflow-hidden group-hover:scale-105 transition-transform">
-                    {item.icon ? (
+                  <div className="w-12 h-14 rounded-xl bg-purple-950/80 border border-purple-500/30 flex items-center justify-center text-purple-300 text-xl font-black shrink-0 overflow-hidden group-hover:scale-105 transition-transform">
+                    {item.image ? (
+                      <img
+                        src={item.image}
+                        onError={handleImageError}
+                        alt={item.name}
+                        referrerPolicy="no-referrer"
+                        className="w-full h-full object-cover"
+                      />
+                    ) : item.icon ? (
                       <span className="text-2xl">{item.icon}</span>
                     ) : (
                       <Sparkles className="w-5 h-5 text-purple-400" />
@@ -275,6 +288,7 @@ export const ProductSearchModal: React.FC<ProductSearchModalProps> = ({
                           price: item.price,
                           details: item.details,
                           icon: item.icon,
+                          image: item.image,
                         });
                       }}
                       className={`p-2.5 rounded-xl border transition-all cursor-pointer ${

@@ -10,8 +10,8 @@ import { useLanguage } from '../context/LanguageContext';
 import { handleImageError } from '../utils/imageHelper';
 
 interface GamesSectionProps {
-  onAddToCart: (item: { name: string; details: string; price: number; category: 'game'; icon?: string }) => void;
-  onInstantBuy?: (item: { name: string; details: string; price: number; category: 'game'; icon?: string }) => void;
+  onAddToCart: (item: { name: string; details: string; price: number; category: 'game'; icon?: string; image?: string }) => void;
+  onInstantBuy?: (item: { name: string; details: string; price: number; category: 'game'; icon?: string; image?: string }) => void;
   isWishlisted?: (id: string) => boolean;
   onToggleWishlist?: (item: Omit<WishlistItem, 'addedAt'>) => void;
   hasOrderedCategory?: (category: 'game' | 'psplus' | 'vbucks' | 'rocket' | 'hezo') => boolean;
@@ -161,7 +161,8 @@ export const GamesSection: React.FC<GamesSectionProps> = ({
       details,
       price: finalPrice,
       category: 'game',
-      icon: game.icon
+      icon: game.icon,
+      image: game.image,
     });
 
     setAddedGameId(`${game.id}-${selectedPlatform}`);
@@ -503,9 +504,9 @@ export const GamesSection: React.FC<GamesSectionProps> = ({
               <div
                 key={game.id}
                 onClick={() => setActiveModalGame(game)}
-                className={`group relative rounded-2xl glass-panel p-5 border transition-all duration-200 hover:-translate-y-1 flex flex-col justify-between cursor-pointer ${
+                className={`group relative rounded-2xl glass-panel p-4 sm:p-5 border transition-all duration-300 hover:-translate-y-1.5 flex flex-col justify-between cursor-pointer ${
                   isSoldOut
-                    ? 'border-rose-500/40 bg-slate-950/80 opacity-85 hover:border-rose-400/80 shadow-lg shadow-rose-950/20'
+                    ? 'border-rose-500/40 bg-slate-950/85 opacity-85 hover:border-rose-400/80 shadow-lg shadow-rose-950/20'
                     : lowStock
                     ? 'border-rose-500/50 hover:border-rose-400 shadow-lg shadow-rose-950/30'
                     : isBought
@@ -517,98 +518,103 @@ export const GamesSection: React.FC<GamesSectionProps> = ({
                     : 'border-white/5 hover:border-purple-500/50'
                 }`}
               >
-                {/* Dynamic Badges: Sold Out / Bought Before / Low Stock / Pre-Order / Best Deal / Hot */}
-                <div className="absolute top-3 left-3 flex flex-wrap items-center gap-1.5 z-10 max-w-[75%]">
-                  {isSoldOut && (
-                    <span className="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-rose-600/30 text-rose-300 border border-rose-500/60 flex items-center gap-1 shadow-md shadow-rose-950/60">
-                      <AlertCircle className="w-3 h-3 text-rose-400" />
-                      <span>{language === 'ar' ? 'نفذت الكمية (Sold Out)' : 'Sold Out'}</span>
-                    </span>
-                  )}
-                  {!isSoldOut && isBought && (
-                    <span className="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-500/25 text-emerald-300 border border-emerald-500/50 flex items-center gap-1 shadow-md shadow-emerald-950/60">
-                      <CheckCircle2 className="w-3 h-3 text-emerald-400" />
-                      <span>{language === 'ar' ? 'تم شراؤه سابقاً' : 'Bought Before'}</span>
-                    </span>
-                  )}
-                  {lowStock && (
-                    <span className="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-rose-500/25 text-rose-300 border border-rose-500/50 flex items-center gap-1 shadow-md shadow-rose-950/60 animate-pulse">
-                      <Flame className="w-3 h-3 text-rose-400" />
-                      <span>{language === 'ar' ? `متبقي ${game.stock} فقط!` : `Low Stock: ${game.stock} Left`}</span>
-                    </span>
-                  )}
-                  {!isSoldOut && game.isPreorder ? (
-                    <span className="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/40 flex items-center gap-1 shadow-md shadow-amber-950/60">
-                      <Clock className="w-3 h-3 text-amber-400" /> {language === 'ar' ? 'حجز مسبق' : 'Pre-Order'}
-                    </span>
-                  ) : !isSoldOut && isBestDeal ? (
-                    <span className="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 flex items-center gap-1 shadow-md shadow-emerald-950/60 animate-pulse">
-                      <Zap className="w-3 h-3 text-emerald-400" /> {language === 'ar' ? 'أفضل عرض' : 'Best Deal'}
-                    </span>
-                  ) : !isSoldOut && game.popular ? (
-                    <span className="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/40 flex items-center gap-1 shadow-sm">
-                      <Sparkles className="w-3 h-3 text-amber-400" /> {language === 'ar' ? 'شائع' : 'Hot'}
-                    </span>
-                  ) : null}
-                </div>
-
-                {/* Heart / Wishlist Button */}
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    if (onToggleWishlist) {
-                      onToggleWishlist({
-                        id: `game-${game.id}`,
-                        productId: game.id,
-                        name: game.name,
-                        category: 'game',
-                        price: isAvailable ? price : calculateGamePrice(game.prim5 || game.sec || 0),
-                        details: `${platformLabels[selectedPlatform].tag} • ${game.genre || 'PlayStation'}`,
-                        icon: game.icon,
-                      });
-                    }
-                  }}
-                  className={`absolute top-3 right-3 p-2 rounded-xl transition-all z-10 cursor-pointer ${
-                    isWishItem
-                      ? 'bg-pink-950/80 border border-pink-500/60 text-pink-400 shadow-md shadow-pink-950/50'
-                      : 'bg-slate-900/80 hover:bg-pink-950/40 border border-white/10 hover:border-pink-500/40 text-slate-400 hover:text-pink-400'
-                  }`}
-                  title={isWishItem ? (language === 'ar' ? 'إزالة من المفضلة' : 'Remove from Wishlist') : (language === 'ar' ? 'إضافة إلى المفضلة' : 'Add to Wishlist')}
-                >
-                  <Heart
-                    className={`w-4 h-4 transition-transform active:scale-125 ${
-                      isWishItem ? 'fill-pink-500 text-pink-500' : ''
-                    }`}
-                  />
-                </button>
-
                 <div>
-                  {/* Icon / Cover Thumbnail & Title Header */}
-                  <div className={`flex items-start gap-3.5 mb-3.5 ${game.isPreorder || isBestDeal || game.popular ? 'mt-7' : ''}`}>
-                    <div className="w-14 h-18 sm:w-16 sm:h-20 rounded-xl overflow-hidden shrink-0 shadow-lg shadow-purple-950/50 border border-white/20 bg-slate-900 group-hover:scale-105 transition-all">
-                      {game.image ? (
-                        <img
-                          src={game.image}
-                          onError={handleImageError}
-                          alt={game.name}
-                          referrerPolicy="no-referrer"
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                        />
-                      ) : (
-                        <div className="w-full h-full gradient-bg flex items-center justify-center">
-                          <Gamepad2 className="w-7 h-7 text-white" />
-                        </div>
+                  {/* Prominent Game Poster Artwork Banner */}
+                  <div className="relative w-full aspect-[16/10] sm:aspect-[16/9] rounded-xl overflow-hidden mb-3.5 bg-slate-950 border border-white/10 group-hover:border-purple-500/40 transition-all shadow-md">
+                    {game.image ? (
+                      <img
+                        src={game.image}
+                        onError={handleImageError}
+                        alt={game.name}
+                        referrerPolicy="no-referrer"
+                        loading="lazy"
+                        className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                      />
+                    ) : (
+                      <div className="w-full h-full gradient-bg flex items-center justify-center">
+                        <Gamepad2 className="w-10 h-10 text-white/40" />
+                      </div>
+                    )}
+
+                    {/* Subtle Gradient Scrim for contrast */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-black/40 pointer-events-none" />
+
+                    {/* Dynamic Badges: Sold Out / Bought Before / Low Stock / Pre-Order / Best Deal / Hot */}
+                    <div className="absolute top-2.5 left-2.5 flex flex-wrap items-center gap-1.5 z-10 max-w-[70%]">
+                      {isSoldOut && (
+                        <span className="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-rose-600/90 text-rose-100 border border-rose-400/60 flex items-center gap-1 shadow-md shadow-rose-950/80 backdrop-blur-md">
+                          <AlertCircle className="w-3 h-3 text-rose-200" />
+                          <span>{language === 'ar' ? 'نفذت الكمية' : 'Sold Out'}</span>
+                        </span>
                       )}
-                    </div>
-                    <div>
-                      <h3 className="text-lg sm:text-xl font-black text-white group-hover:text-purple-300 transition-colors flex items-center gap-1.5 leading-snug">
-                        {game.name}
-                      </h3>
-                      {game.genre && (
-                        <p className="text-xs text-slate-400 mt-1 font-medium">{game.genre}</p>
+                      {!isSoldOut && isBought && (
+                        <span className="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-600/90 text-emerald-100 border border-emerald-400/60 flex items-center gap-1 shadow-md shadow-emerald-950/80 backdrop-blur-md">
+                          <CheckCircle2 className="w-3 h-3 text-emerald-200" />
+                          <span>{language === 'ar' ? 'تم شراؤه سابقاً' : 'Bought'}</span>
+                        </span>
                       )}
+                      {lowStock && (
+                        <span className="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-rose-600/90 text-rose-100 border border-rose-400/60 flex items-center gap-1 shadow-md shadow-rose-950/80 animate-pulse backdrop-blur-md">
+                          <Flame className="w-3 h-3 text-rose-200" />
+                          <span>{language === 'ar' ? `متبقي ${game.stock} فقط!` : `Low Stock: ${game.stock}`}</span>
+                        </span>
+                      )}
+                      {!isSoldOut && game.isPreorder ? (
+                        <span className="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-500/95 text-amber-950 border border-amber-300/80 flex items-center gap-1 shadow-md shadow-amber-950/80 backdrop-blur-md font-black">
+                          <Clock className="w-3 h-3 text-amber-950" /> {language === 'ar' ? 'حجز مسبق' : 'Pre-Order'}
+                        </span>
+                      ) : !isSoldOut && isBestDeal ? (
+                        <span className="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-500/95 text-emerald-950 border border-emerald-300/80 flex items-center gap-1 shadow-md shadow-emerald-950/80 animate-pulse backdrop-blur-md font-black">
+                          <Zap className="w-3 h-3 text-emerald-950" /> {language === 'ar' ? 'أفضل عرض' : 'Best Deal'}
+                        </span>
+                      ) : !isSoldOut && game.popular ? (
+                        <span className="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-purple-600/90 text-purple-100 border border-purple-400/60 flex items-center gap-1 shadow-sm backdrop-blur-md font-black">
+                          <Sparkles className="w-3 h-3 text-amber-300" /> {language === 'ar' ? 'شائع' : 'Hot'}
+                        </span>
+                      ) : null}
                     </div>
+
+                    {/* Heart / Wishlist Button */}
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (onToggleWishlist) {
+                          onToggleWishlist({
+                            id: `game-${game.id}`,
+                            productId: game.id,
+                            name: game.name,
+                            category: 'game',
+                            price: isAvailable ? price : calculateGamePrice(game.prim5 || game.sec || 0),
+                            details: `${platformLabels[selectedPlatform].tag} • ${game.genre || 'PlayStation'}`,
+                            icon: game.icon,
+                            image: game.image,
+                          });
+                        }
+                      }}
+                      className={`absolute top-2.5 right-2.5 p-2 rounded-xl transition-all z-10 cursor-pointer backdrop-blur-md ${
+                        isWishItem
+                          ? 'bg-pink-950/90 border border-pink-500/80 text-pink-400 shadow-md shadow-pink-950/50'
+                          : 'bg-black/60 hover:bg-black/80 border border-white/20 hover:border-pink-500/60 text-slate-300 hover:text-pink-400'
+                      }`}
+                      title={isWishItem ? (language === 'ar' ? 'إزالة من المفضلة' : 'Remove from Wishlist') : (language === 'ar' ? 'إضافة إلى المفضلة' : 'Add to Wishlist')}
+                    >
+                      <Heart
+                        className={`w-4 h-4 transition-transform active:scale-125 ${
+                          isWishItem ? 'fill-pink-500 text-pink-500' : ''
+                        }`}
+                      />
+                    </button>
+                  </div>
+
+                  {/* Title & Genre Header */}
+                  <div className="mb-2.5">
+                    <h3 className="text-lg sm:text-xl font-black text-white group-hover:text-purple-300 transition-colors flex items-center gap-1.5 leading-snug line-clamp-1">
+                      {game.name}
+                    </h3>
+                    {game.genre && (
+                      <p className="text-xs text-slate-400 mt-0.5 font-medium">{game.genre}</p>
+                    )}
                   </div>
 
                   {/* Trust & Delivery Estimation Tag + Review Preview */}
@@ -750,6 +756,7 @@ export const GamesSection: React.FC<GamesSectionProps> = ({
                               price: finalPrice,
                               category: 'game' as const,
                               icon: game.icon,
+                              image: game.image,
                             };
                             if (onInstantBuy) {
                               onInstantBuy(item);

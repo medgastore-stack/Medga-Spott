@@ -7,7 +7,7 @@ import { saveOrderToBackend } from '../lib/orderUtils';
 import { getImageUrl, handleImageError } from '../utils/imageHelper';
 
 interface RocketSectionProps {
-  onAddToCart: (item: { name: string; details: string; price: number; category: 'rocket'; icon?: string }) => void;
+  onAddToCart: (item: { name: string; details: string; price: number; category: 'rocket'; icon?: string; image?: string }) => void;
   onShowToast?: (msg: string, type?: 'success' | 'error' | 'info') => void;
   isWishlisted?: (id: string) => boolean;
   onToggleWishlist?: (item: Omit<WishlistItem, 'addedAt'>) => void;
@@ -110,7 +110,8 @@ export const RocketSection: React.FC<RocketSectionProps> = ({
       details,
       price: selectedPack.price,
       category: 'rocket',
-      icon: 'rocket'
+      icon: 'rocket',
+      image: selectedPack.isPass ? getImageUrl('Rocket League Season Pass.jpg') : getImageUrl('Rocket League Credits.jpg'),
     });
 
     setIsAdded(true);
