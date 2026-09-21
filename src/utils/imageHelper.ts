@@ -2,7 +2,7 @@ import React from 'react';
 
 /**
  * Universal Asset URL resolver for GitHub Pages, custom domains, and local dev.
- * Automatically handles repo subpaths (e.g. /my-repo/), spaces in filenames, and fallbacks.
+ * Automatically handles spaces/special chars in filenames, repo subpaths (e.g. /my-repo/), and relative paths.
  */
 export function getImageUrl(path: string): string {
   if (!path) return '';
@@ -13,23 +13,28 @@ export function getImageUrl(path: string): string {
   // Clean leading slashes or dots
   const clean = path.replace(/^(\.|\/)+/, '');
 
+  // Ensure individual path segments (like "FC 27 Ultimate Edition.jpg") have proper URI encoding for spaces and special characters
+  const encodedSegments = clean
+    .split('/')
+    .map((seg) => encodeURIComponent(decodeURIComponent(seg)))
+    .join('/');
+
   let base = './';
   if (typeof window !== 'undefined' && window.location) {
     const pathname = window.location.pathname || '/';
-    const lastSegment = pathname.substring(pathname.lastIndexOf('/') + 1);
-    const isFile = lastSegment.includes('.');
-    let dir = pathname;
-    if (isFile) {
-      dir = pathname.substring(0, pathname.lastIndexOf('/') + 1);
-    } else if (!dir.endsWith('/')) {
-      dir = `${dir}/`;
-    }
-    if (dir && dir !== '/') {
+    if (pathname.length > 1 && pathname !== '/') {
+      const isFile = pathname.split('/').pop()?.includes('.') ?? false;
+      let dir = pathname;
+      if (isFile) {
+        dir = pathname.substring(0, pathname.lastIndexOf('/') + 1);
+      } else if (!dir.endsWith('/')) {
+        dir = `${dir}/`;
+      }
       base = dir;
     }
   }
 
-  return `${base}${clean}`;
+  return `${base}${encodedSegments}`;
 }
 
 /**
@@ -55,26 +60,34 @@ export function handleImageError(e: React.SyntheticEvent<HTMLImageElement, Event
 
   target.dataset.retryCount = (retryCount + 1).toString();
 
-  const urlObj = new URL(currentSrc, window.location.href);
-  const rawPath = urlObj.pathname;
-  const filename = rawPath.split('/').pop() || '';
-  const decodedFilename = decodeURIComponent(filename);
+  try {
+    const urlObj = new URL(currentSrc, window.location.href);
+    const rawPath = urlObj.pathname;
+    const filename = rawPath.split('/').pop() || '';
+    const decodedFilename = decodeURIComponent(filename);
 
-  if (retryCount === 0) {
-    // Try inside images/ subfolder
-    if (!rawPath.includes('/images/')) {
-      target.src = getImageUrl(`images/${decodedFilename}`);
+    if (retryCount === 0) {
+      // Try with /images/ subfolder
+      if (!rawPath.includes('/images/')) {
+        target.src = getImageUrl(`images/${decodedFilename}`);
+      } else {
+        target.src = getImageUrl(decodedFilename);
+      }
+    } else if (retryCount === 1) {
+      // Try root-relative directly
+      target.src = `/${encodeURIComponent(decodedFilename)}`;
+    } else if (retryCount === 2) {
+      // Try relative ./ directly
+      target.src = `./${encodeURIComponent(decodedFilename)}`;
     } else {
-      target.src = getImageUrl(decodedFilename);
+      target.src = `./images/${encodeURIComponent(decodedFilename)}`;
     }
-  } else if (retryCount === 1) {
-    // Try encoded URI
-    target.src = getImageUrl(encodeURIComponent(decodedFilename));
-  } else if (retryCount === 2) {
-    // Try relative ./ or ./images/
-    target.src = `./${decodedFilename}`;
-  } else {
-    target.src = `./images/${decodedFilename}`;
+  } catch {
+    // If URL parsing fails, fallback directly
+    if (fallbackSrc) {
+      target.src = fallbackSrc;
+    }
   }
 }
+
 
