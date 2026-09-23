@@ -1856,6 +1856,12 @@ GUIDELINES & FORMATTING:
   app.use("/images", express.static(path.join(process.cwd(), "public", "images")));
   app.use("/SeenSoldThere", express.static(path.join(process.cwd(), "public", "SeenSoldThere")));
   app.use("/SeenSoldThere", express.static(path.join(process.cwd(), "SeenSoldThere")));
+  app.use("/seensold there", express.static(path.join(process.cwd(), "public", "seensold there")));
+  app.use("/seensold there", express.static(path.join(process.cwd(), "seensold there")));
+  app.use("/seensoldthere", express.static(path.join(process.cwd(), "public", "seensoldthere")));
+  app.use("/seensoldthere", express.static(path.join(process.cwd(), "seensoldthere")));
+  app.use("/SeenSold There", express.static(path.join(process.cwd(), "public", "SeenSold There")));
+  app.use("/SeenSold There", express.static(path.join(process.cwd(), "SeenSold There")));
   app.use(express.static(path.join(process.cwd(), "dist")));
 
   // Resilient image resolver middleware: catches all image requests regardless of encoding or subpath
@@ -1865,10 +1871,19 @@ GUIDELINES & FORMATTING:
       const decodedFilename = path.basename(decodeURIComponent(rawPath));
       const candidates = [
         path.join(process.cwd(), "public", "SeenSoldThere", decodedFilename),
+        path.join(process.cwd(), "public", "seensold there", decodedFilename),
+        path.join(process.cwd(), "public", "seensoldthere", decodedFilename),
+        path.join(process.cwd(), "public", "SeenSold There", decodedFilename),
         path.join(process.cwd(), "SeenSoldThere", decodedFilename),
+        path.join(process.cwd(), "seensold there", decodedFilename),
+        path.join(process.cwd(), "seensoldthere", decodedFilename),
+        path.join(process.cwd(), "SeenSold There", decodedFilename),
         path.join(process.cwd(), "public", decodedFilename),
         path.join(process.cwd(), "public", "images", decodedFilename),
         path.join(process.cwd(), "dist", "SeenSoldThere", decodedFilename),
+        path.join(process.cwd(), "dist", "seensold there", decodedFilename),
+        path.join(process.cwd(), "dist", "seensoldthere", decodedFilename),
+        path.join(process.cwd(), "dist", "SeenSold There", decodedFilename),
         path.join(process.cwd(), "dist", decodedFilename),
         path.join(process.cwd(), "dist", "images", decodedFilename),
       ];
