@@ -25,20 +25,26 @@ export function getImageUrl(path: string): string {
 
   if (typeof window !== 'undefined' && window.location) {
     const origin = window.location.origin;
-    const pathname = window.location.pathname || '/';
+    let pathname = window.location.pathname || '/';
 
-    // If pathname ends with a file (e.g. index.html), strip the file
-    let dir = pathname;
-    if (/\.[a-zA-Z0-9]+$/.test(pathname)) {
-      dir = pathname.substring(0, pathname.lastIndexOf('/') + 1);
-    } else if (!dir.endsWith('/')) {
-      dir = `${dir}/`;
+    // Remove any trailing index.html or document filename
+    if (/\/[^/]+\.[a-zA-Z0-9]+$/.test(pathname)) {
+      pathname = pathname.substring(0, pathname.lastIndexOf('/') + 1);
+    }
+    if (!pathname.endsWith('/')) {
+      pathname = `${pathname}/`;
     }
 
-    return `${origin}${dir}${encodedSegments}`;
+    // Try SeenSoldThere/ path if no specific folder was provided
+    let finalPath = encodedSegments;
+    if (!encodedSegments.includes('/')) {
+      finalPath = `SeenSoldThere/${encodedSegments}`;
+    }
+
+    return `${origin}${pathname}${finalPath}`;
   }
 
-  return `/${encodedSegments}`;
+  return `/SeenSoldThere/${encodedSegments}`;
 }
 
 /**
